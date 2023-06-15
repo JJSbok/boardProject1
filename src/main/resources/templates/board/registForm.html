@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/boardLayout.html}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <form action="/board/regist" method="post">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">제목</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="title">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">작성자</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="writer">
+              </div>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">내용</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content"></textarea>
+            </div>
+            <!-- <button type="button" class="btn btn-primary">제출</button>  -->
+            <input type="submit" class="btn btn-primary">
+          </form>
+    </div>
+<!-- 
+    <div layout:fragment="content">
+        <form action="/board/regist" method="post">
+            <label>작성자</label>
+            <input type = "text" name="writer">
+            <br>
+            <label>제목</label>
+            <input type = "text" name="title">
+            <br>
+            <label>내용</label>
+            <textarea name="content"></textarea>
+            <input type = "submit"> 
+        </form>
+    </div> -->
+
+    <script layout:fragment="script">
+        
+    </script>
+</body>
+</html>

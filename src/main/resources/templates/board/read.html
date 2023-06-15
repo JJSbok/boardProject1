@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/boardLayout.html}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+
+        <div class="modal modifyModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">알림</h5>
+                  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                  </button>
+                </div>
+                <div class="modal-body">
+                  수정되었습니다.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary closing" data-dismiss="modal">확인</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+    
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5>제목 [[${board.title}]]</h5>
+              <h6 class="card-subtitle mb-2 text-muted">작성자 [[${board.writer}]]</h6>
+              <p class="card-text">내용 [[${board.content}]]</p>
+              <!-- <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a> -->
+              <button type="button" onclick="location.href='/board/list'" class="btn btn-info">목록</button>
+
+              <form class="actionForm" th:action="@{'/board/modifyForm/'+${board.bno}}" method="get">
+                <button class="btn btn-warning">수정</button>
+            </form>
+
+            <!-- <button class="btn btn-warning" formmethod="get" th:onclick="|location.href='@{/board/modifyForm/'| + ${board.bno}} ">수정</button> -->
+
+        
+            <form action="/board/delete" method="post">
+                <input type="hidden" name="bno"  th:value="${board.bno}">
+                <button class="btn btn-danger">삭제</button>
+            </form>
+            </div>
+          </div>
+    </div>
+
+    <!-- <h1>제목 [[${board.title}]]</h1>
+    <h2>작성자 [[${board.writer}]]</h2>
+    <h3>내용 [[${board.content}]]</h3>
+
+    <button type="button" onclick="location.href='/board/list'">목록</button>
+
+    
+    <form class="actionForm" th:action="@{'/board/modifyForm/'+${board.bno}}" method="get">
+        <button>수정</button> -->
+        <!-- <input type="button" class="modifyBtn" th:data-bno="${board.bno}" value="수정"> -->
+    <!-- </form>
+
+    <form action="/board/delete" method="post">
+        <input type="hidden" name="bno"  th:value="${board.bno}">
+        <button>삭제</button>
+    </form> -->
+
+
+    
+    <script layout:fragment="script">
+
+
+        const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+        const result = [[${resultFlesh}]]
+
+
+            if(result && result === 'SUCCESS') {
+            modifyModal.modal('show')
+
+
+            document.querySelector(".closing").addEventListener("click", (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+
+                modifyModal.hide()
+            }, false)
+        }
+
+        // const actionForm = document.querySelector(".actionForm")
+        // const modifyBtn = document.querySelector(".modifyBtn")
+        
+        // modifyBtn.addEventListener("click", (e) =>{
+        //     e.preventDefault
+        //     e.stopPropagation
+            
+        //     console.log(e)
+        //     const target = e.target
+        //     console.log(target)
+
+        //     const bno = target.getAttribute("data-bno")
+        //     console.log(bno)
+
+        //     actionForm.setAttribute("action", `/board/modifyForm/${bno}`)
+        //     actionForm.submit()
+
+        // }, false)
+        
+        
+    </script>
+</body>
+</html>

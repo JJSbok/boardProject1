@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/boardLayout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div layout:fragment="content">
+
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Dashboard</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    DataTable Example
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped boardTable">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">작성일</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="board : ${list.list}">
+                                <td class="boardBno" th:data-bno="${board.bno}">[[${board.bno}]]</td>
+                                <th>[[${board.title}]]</th>
+                                <th>[[${board.writer}]]</th>
+                                <th>[[${board.regDate}]]</th>
+                            </tr>
+                        </tbody>
+                      </table>
+                    <div>
+                        <div class="card-footer clearfix">
+                        <ul class="pagination boardUL">
+                            <li class="page-item"><a class="page-link" href="10">&laquo;</a></li>
+          <li class="page-item"><a class="page-link" href="11">11</a></li>
+          <li class="page-item"><a class="page-link" href="12">12</a></li>
+          <li class="page-item"><a class="page-link" href="13">13</a></li>
+          <li class="page-item"><a class="page-link" href="21">&raquo;</a></li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="actionForm" action="/board/list" method="get">
+            <input type="hidden" name="page" th:value="${list.total}">
+            <input type="hidden" name="size" th:value="${pageRequsetDTO.size}">
+        </form>
+
+        <button class="registBtn button" onclick="location='/board/registForm'">글작성</button>
+        <script src="/js/pageUtil.js"></script>
+    </div>
+    
+    <script layout:fragment="script" th:inline="javascript">
+
+        const actionForm = document.querySelector(".actionForm")
+        const boardTable = document.querySelector(".boardTable")
+        const pageObj = actionForm.querySelector("input[name='page']")
+        const boardUL = document.querySelector(".boardUL")
+
+        const {page,size} = [[${pageRequsetDTO}]]
+
+        console.log(page,size)
+
+        const {total} = [[${list}]]
+
+        console.log("total:" + total)
+
+
+        const pageLIStr = makePages(page,size, total)
+        boardUL.innerHTML = pageLIStr
+
+        boardUL.addEventListener("click", (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+        const pageNum = target.getAttribute("href")
+
+        pageObj.value = pageNum
+        actionForm.setAttribute("action", `/board/list`)
+        actionForm.submit()
+
+        }, false)
+
+
+        boardTable.addEventListener("click", (e) => {
+            // e.preventDefault
+            // e.stopPropagation
+
+
+            console.log(e)
+            const target = e.target
+            console.log(target)
+
+            if(!target.getAttribute("data-bno")){
+                return
+            }
+
+            const bno = target.getAttribute("data-bno")
+
+            console.log(bno)
+            actionForm.setAttribute("action", `/board/read/${bno}`)
+            actionForm.submit()
+
+        }, false)
+        
+        document.querySelector(".registBtn").addEventListener("click", e => {
+            e.preventDefault()
+            e.stopPropagation()
+
+        })
+
+    </script>
+
+</body>
+</html>
