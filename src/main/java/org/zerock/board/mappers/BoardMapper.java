@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.zerock.board.dto.BoardDTO;
 import org.zerock.board.dto.PageRequsetDTO;
 
-@Mapper
 public interface BoardMapper {
     List<BoardDTO> list(PageRequsetDTO requsetDTO);
 

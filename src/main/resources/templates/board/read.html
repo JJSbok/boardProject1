@@ -6,46 +6,111 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link href="/css/styles.css" rel="stylesheet" />
     <title>Document</title>
 </head>
 <body>
+
     <div layout:fragment="content">
+    <div class="d-flex justify content-around m-auto">
 
-        <div class="modal modifyModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">알림</h5>
-                  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-                    <!-- <span aria-hidden="true">&times;</span> -->
-                  </button>
-                </div>
-                <div class="modal-body">
-                  수정되었습니다.
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary closing" data-dismiss="modal">확인</button>
-                </div>
-              </div>
-            </div>
+
+  <div class="modal fade updateModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">댓글 수정</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label"></label>
+              <textarea class="form-control" id="message-text" placeholder="내용을 입력하세요."></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-primary">수정</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+
+        <div class="col-lg-8 ">
+          <!-- Post content-->
+          <article>
+              <!-- Post header-->
+              <header class="mb-4">
+                  <!-- Post title-->
+                  <br>
+                  <h1 class="fw-bolder mb-1">[[${board.title}]]</h1>
+                  <!-- Post meta content-->
+                  <div class="text-muted fst-italic mb-2">[[${board.regDate}]]</div>
+                  <!-- Post categories-->
+                  
+              </header>
+              <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+              
+              <!-- Post content-->
+              <section class="mb-5 sectionz">
+                [[${board.content}]]ing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.</p>
+              </section>
+          </article>
+
+          
+          
+          <form class="actionForm" th:action="@{'/board/modifyForm/'+${board.bno}}" method="get">
+            <button type="button" onclick="location.href='/board/list'" class="btn btn-outline-secondary btn-sm">목록</button>
+            <button class="btn btn-outline-secondary btn-sm ">수정</button>
+          </form>
+          <br>
+
+          <!-- Comments section-->
+          <section class="mb-5">
+              <div class="card bg-light">
+                  <div class="card-body replyBody">
+                      <!-- Comment form-->
+
+                    <form class="mb-4 ">
+                      <textarea class="form-control replyText " rows="3" placeholder="댓글을 입력하세요." required></textarea>
+                      <input type="hidden" name="gno" value="0">
+                      <input type="text" name="replyer" value="" placeholder=" 작성자">
+                    
+                      <button type="button" class="btn btn-secondary btn-sm replyWrite">작성</button>
+                      
+                    </form>
+                      
+                      
+                      
+                      
+                    
+                    <div class ="replyBox">
+                      
+                    </div>
+
+                  </div>
+              </div>
+          </section>
+        <!-- </div> -->
+      <!-- </div> -->
     
+
+
+<!-- 
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5>제목 [[${board.title}]]</h5>
               <h6 class="card-subtitle mb-2 text-muted">작성자 [[${board.writer}]]</h6>
               <p class="card-text">내용 [[${board.content}]]</p>
-              <!-- <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a> -->
               <button type="button" onclick="location.href='/board/list'" class="btn btn-info">목록</button>
 
               <form class="actionForm" th:action="@{'/board/modifyForm/'+${board.bno}}" method="get">
                 <button class="btn btn-warning">수정</button>
             </form>
-
-            <!-- <button class="btn btn-warning" formmethod="get" th:onclick="|location.href='@{/board/modifyForm/'| + ${board.bno}} ">수정</button> -->
 
         
             <form action="/board/delete" method="post">
@@ -53,7 +118,12 @@
                 <button class="btn btn-danger">삭제</button>
             </form>
             </div>
-          </div>
+          </div> -->
+
+          
+          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </div>
+    </div>
     </div>
 
     <!-- <h1>제목 [[${board.title}]]</h1>
@@ -74,45 +144,178 @@
     </form> -->
 
 
-    
-    <script layout:fragment="script">
 
 
-        const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
-        const result = [[${resultFlesh}]]
+    <script layout:fragment="script"  th:inline="javascript">
 
 
-            if(result && result === 'SUCCESS') {
-            modifyModal.modal('show')
+        // const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+        // const result = [[${resultFlesh}]]
 
 
-            document.querySelector(".closing").addEventListener("click", (e) => {
-                e.preventDefault()
-                e.stopPropagation()
+        //     if(result && result === 'SUCCESS') {
+        //     modifyModal.modal('show')
 
-                modifyModal.hide()
-            }, false)
+
+        //     document.querySelector(".closing").addEventListener("click", (e) => {
+        //         e.preventDefault()
+        //         e.stopPropagation()
+
+        //         modifyModal.hide()
+        //     }, false)
+
+        const {bno} = [[${board}]]
+        const replyWrite = document.querySelector(".replyWrite")
+        const replyText = document.querySelector(".replyText")
+        const gnoInput = document.querySelector("input[name='gno']")
+        const writerInput = document.querySelector("input[name='replyer']")
+
+        const getRemoteList = async (pageNum) => {
+          const { data } = await axios.get(`http://localhost:8080/replies/${bno}/list?page=${pageNum}`);
+          return data;
+        };
+
+        const postRemoteAdd = async (reply) => {
+          const {data} = await axios.post(`http://localhost:8080/replies/${bno}/new`, reply);
         }
 
-        // const actionForm = document.querySelector(".actionForm")
-        // const modifyBtn = document.querySelector(".modifyBtn")
+        const delRemoteRemove = async(rno) => {
+          const {data} = await axios.delete(`http://localhost:8080/replies/delete/${rno}`);
+        }
         
-        // modifyBtn.addEventListener("click", (e) =>{
-        //     e.preventDefault
-        //     e.stopPropagation
-            
-        //     console.log(e)
-        //     const target = e.target
-        //     console.log(target)
+        // const rno = 1
+        // delRemoteRemove(rno).then((result) => {
+        //   console.log(result);
+        // }).catch(e =>{
+        //   console.log(result)
+        // })
 
-        //     const bno = target.getAttribute("data-bno")
-        //     console.log(bno)
+        let page = 1;
 
-        //     actionForm.setAttribute("action", `/board/modifyForm/${bno}`)
-        //     actionForm.submit()
+        getRemoteList(page).then((result) => {
+            console.log(result);
+        });
 
-        // }, false)
+        // add test
+        // const reply = {bno:bno,reply:"Test Reply", replyer: "r1"}
+        // getRemoteAdd(reply).then((result) =>{
+        //   console.log(result)
+        // })
+
+
+        replyWrite.addEventListener("click", (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          const reply = {bno:bno, reply: replyText.value, gno : gnoInput.value, replyer:writerInput.value}
+          console.log(reply)
+
+          postRemoteAdd(reply).then(result =>{
+          console.log(result)
+          loadReply(page)
+          
+          }).catch(e => {
+            console.log("실패")
+            console.log(e.response.data)
+          })
+        }, false)
+
+
+
+      const replyBox = document.querySelector(".replyBox")
+
+      const loadReply = async(page, goEnd = false ) => {
+      console.log("loadReply.......")
+
+      const data = await getRemoteList (page)
+
+      console.log(data)
+
+      const {list, total} = data
+
+
+      let str = ""
+      for(let i = 0; i< list.length; i++ ){ 
+        const {rno,reply,replyer,gno,replyDate} = list[i]
+
+       if (rno === gno){
+
+      
+
+        // str += `<li data-rno=${rno} data-gno=${gno}>${reply} <button>답글</button></li>`
+        str += `                      <div class="d-flex" data-gno=${gno}>
+                          <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                          <div class="ms-3">
+                              <div class="fw-bold">${replyer}</div>
+                              ${reply} 
+                              <br>
+                              <a style="color:gray; font-size:14px; text-decoration-line : none;">${replyDate} <a>
+                              <a href="#" role="button" class="delReply" data-rno=${rno} style="color:gray; font-size:14px; text-decoration-line : none;">삭제</a>
+                              <a href="#" role="button" class="updateReply" data-rno=${rno} style="color:gray; font-size:14px; text-decoration-line : none;">수정</a>
+                          </div>
+                      </div><br>`
         
+                    }else{
+                      str += `                    <div class="d-flex" data-gno=${gno}>
+                          <div class="flex-shrink-0">　　　　<img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                          <div class="ms-3">
+                              <div class="fw-bold">${replyer}</div>
+                              ${reply} 
+                              <br>
+                              <a style="color:gray; font-size:14px; text-decoration-line : none;">${replyDate} <a>
+                              <a href="#" role="button" class="delReply" data-rno=${rno} style="color:gray; font-size:14px; text-decoration-line : none;">삭제</a>
+                              <a href="#" role="button" class="updateReply" data-rno=${rno} style="color:gray; font-size:14px; text-decoration-line : none;">수정</a>
+                          </div>
+                      </div><br>`
+                    }
+
+        
+      } // end for
+      replyBox.innerHTML = str
+
+    }
+
+    const updateModal = new bootstrap.Modal(document.querySelector(".updateModal"))
+
+    const delReply = document.querySelector(".d-flex")
+    delReply.addEventListener("click", (e) =>{
+
+      e.stopPropagation()
+      e.preventDefault()
+
+      const target = e.target
+      console.log(e)
+      const tag = target.className
+      console.log(tag)
+
+      const rno = target.getAttribute("data-rno")
+
+      console.log(rno)
+
+      if(tag === 'delReply') {
+        delRemoteRemove(rno).then(result => {
+          console.log("삭제 성공")
+          console.log(result)
+          loadReply(page, true)
+        }).catch(e => {
+          console.log("삭제 실패")
+          console.log(e)
+        })
+      } else if(tag === 'updateReply') {
+        updateModal.show()
+      } else {
+        return
+      }
+
+
+    }, false)
+
+    
+
+
+    loadReply(page, true)
+
+    
+
         
     </script>
 </body>
